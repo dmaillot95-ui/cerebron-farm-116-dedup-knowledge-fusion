@@ -1,0 +1,5 @@
+F116 RDX SEMANTIC DEDUP CANARY V2
+threshold_selection=DEV_ONLY
+evaluation=FRESH_HOLDOUT
+auto_merge=false
+training=false
