@@ -1,0 +1,24 @@
+{
+  "schema": "F116_RDX_DEDUP_FUSION_CANARY_V1",
+  "status": "PASS",
+  "farm_id": 116,
+  "input_count": 4,
+  "dedup_group_count": 2,
+  "groups": [
+    {
+      "fingerprint": "3effec699c718fbe3d90b9a0b6e7c6592128d1ef33619b4e4c39cb16a895813d",
+      "members": ["A","B"],
+      "sources": ["SRC-1","SRC-2"],
+      "canonical_content": "cold benchmarks must never enter training data"
+    },
+    {
+      "fingerprint": "7b2a1ac4c28b50434b4f000a7ee5ccfcfc86015ac1d59c7b381cebe958e99795",
+      "members": ["C","D"],
+      "sources": ["SRC-3","SRC-4","SRC-5"],
+      "canonical_content": "retrieval memory is not equivalent to neural training"
+    }
+  ],
+  "training_executed": false,
+  "claim_ceiling": "NORMALIZED_EXACT_DEDUP_AND_PROVENANCE_FUSION_CANARY_ONLY_NOT_SEMANTIC_DEDUP",
+  "receipt_sha256": "4a4ad9d99513e4bd252f93d672391fa73017b37969c264abc9d52cf9098a34ab"
+}
