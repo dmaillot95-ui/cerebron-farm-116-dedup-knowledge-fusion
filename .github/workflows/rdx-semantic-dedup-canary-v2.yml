@@ -1,0 +1,38 @@
+name: CEREBRON F116 RDX Semantic Dedup Canary V2
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'config/rdx-semantic-dedup-v2-trigger.txt'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  semantic-dedup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install semantic runtime
+        run: python -m pip install --quiet --no-cache-dir sentence-transformers huggingface_hub numpy
+      - name: Run DEV to frozen-HOLDOUT semantic dedup canary
+        run: python worker/rdx_semantic_dedup_canary_v2.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f116-rdx-semantic-dedup-canary-v2
+          path: artifacts/rdx_semantic_dedup_canary_v2.json
+          if-no-files-found: error
+      - name: Persist receipt
+        run: |
+          mkdir -p receipts
+          cp artifacts/rdx_semantic_dedup_canary_v2.json receipts/rdx-semantic-dedup-canary-v2-${{ github.run_id }}.json
+          git config user.name cerebron-bot
+          git config user.email actions@users.noreply.github.com
+          git add receipts/rdx-semantic-dedup-canary-v2-${{ github.run_id }}.json
+          git diff --cached --quiet && exit 0
+          git commit -m "receipt: F116 semantic dedup canary v2 ${{ github.run_id }}"
+          git pull --rebase origin main
+          git push
