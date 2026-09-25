@@ -1,0 +1,23 @@
+name: CEREBRON F116 RDX Dedup Fusion Canary
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'config/rdx-dedup-fusion-trigger.txt'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python worker/rdx_dedup_fusion_canary.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: f116-rdx-dedup-fusion-canary
+          path: artifacts/rdx_dedup_fusion_canary.json
+          if-no-files-found: error
